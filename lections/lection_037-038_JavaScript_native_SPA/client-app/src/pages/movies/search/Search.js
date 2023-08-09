@@ -15,25 +15,7 @@ export default class Search extends Component {
 
   onClickHandler(event) {
     event.preventDefault();
-    const query = new URLSearchParams(this.#searchData).toString();
-    if (query) {
-      httpService
-        .get(`/search?${query}`)
-        .then(({ data }) => {
-          if (data.Response === "False") {
-            store.dispatch(mutation_types.SET_ALERT, {
-              type: "alert-danger",
-              message: data.Error,
-            });
-            throw new Error(data.Error);
-          }
-          this.props.onSearchSuccess(data);
-        })
-        .catch(() => {});
-    }
-  }
-  updateTemplate(template) {
-    return template;
+    this.props.onSearchSuccess(this.#searchData);
   }
 
   @AsNode
@@ -54,6 +36,6 @@ export default class Search extends Component {
   @SaveContainer
   @BindEvent
   render() {
-    return this.updateTemplate(this.getTemplate());
+    return this.getTemplate();
   }
 }

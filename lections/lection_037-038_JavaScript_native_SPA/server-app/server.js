@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const axios = require("axios");
+require("dotenv").config();
 
 const app = express();
 const port = 9001;
@@ -47,19 +48,36 @@ app.get("/logout", (req, res) => {
   res.status(401).json({ user: "Valera", message: "Ok" });
 });
 
+function lowercaseKeys(obj) {
+  if (!isObject(obj)) {
+    throw new Error(
+      `You must provide an object to "lowercaseKeys". Received "${typeof obj}"`,
+    );
+  }
+
+  return Object.entries(obj).reduce((carry, [key, value]) => {
+    carry[key.toLowerCase()] = value;
+
+    return carry;
+  }, {});
+}
+function isObject(value) {
+  return Object.prototype.toString.call(value) === "[object Object]";
+}
+
 app.get("/search", (req, res) => {
   if (IS_AUTH) {
     const queryParameters = req.query;
 
     axios
-      .get("https://www.omdbapi.com/", {
+      .get(process.env.API_URL, {
         params: {
-          apikey: "13c3d446",
+          apikey: process.env.API_KEY,
           ...queryParameters,
         },
       })
       .then((response) => {
-        const movieData = response.data;
+        const movieData = lowercaseKeys(response.data);
         res.status(200).json(movieData);
       })
       .catch((error) => {

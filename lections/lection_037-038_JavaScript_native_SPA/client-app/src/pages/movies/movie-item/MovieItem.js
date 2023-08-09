@@ -7,14 +7,14 @@ export default class MovieItem extends Component {
   getTemplate() {
     return `
           <div class="movieItem"> 
-            <img src="${this.props.Poster}" alt="${this.props.Title}">
+            <img src="${this.props.poster}" alt="${this.props.title}">
             <h1>
-                ${this.props.Title}
+                ${this.props.title}
             </h1>
-            <p>Rating: ${this.props.imdbRating}</p>
-            <p>${this.props.Plot}</p>
-            <p>${this.props.Director}</p>
-            <p>${this.props.Actors}</p>
+            <p>Rating: ${this.props.imdbrating}</p>
+            <p>${this.props.plot}</p>
+            <p>${this.props.director}</p>
+            <p>${this.props.actors}</p>
           </div>
         `;
   }

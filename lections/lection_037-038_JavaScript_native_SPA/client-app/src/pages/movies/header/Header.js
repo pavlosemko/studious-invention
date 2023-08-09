@@ -11,14 +11,6 @@ export default class Header extends Component {
     super(...props);
   }
 
-  updateTemplate(template) {
-    const search = new Search({ onSearchSuccess: this.props.onSearchSuccess });
-    return this.replaceSlot(template, {
-      key: 'slot[name="search"]',
-      replacer: () => search.render(),
-    });
-  }
-
   @AsNode
   getTemplate() {
     return `
@@ -47,6 +39,6 @@ export default class Header extends Component {
 
   @BindEvent
   render() {
-    return this.updateTemplate(this.getTemplate());
+    return this.getTemplate();
   }
 }
