@@ -1,44 +1,44 @@
-import './Header.scss';
+import "./Header.scss";
 import Component from "@/plugins/component";
-import {AsNode, BindEvent} from "@/common/decorators";
+import { AsNode, BindEvent } from "@/common/decorators";
 import httpService from "@/common/serives/Http.service";
-import {router} from "@/router/router";
-import {mutation_types, store} from "@/store/store";
+import { router } from "@/router/router";
+import { mutation_types, store } from "@/store/store";
+import Search from "@/pages/movies/search/Search";
 
 export default class Header extends Component {
-    constructor(...props) {
-        super(...props);
-    }
+  constructor(...props) {
+    super(...props);
+  }
 
-
-    @AsNode
-    getTemplate() {
-        return `
+  @AsNode
+  getTemplate() {
+    return `
             <header class="header d-flex justify-content-end">
-                <button class="header__exit">
+                <slot name="search"></slot>
+                <button class="header__exit ">
                    <i class="bi bi-door-open-fill"></i>
                 </button>
             </header>
-       `
-    }
+       `;
+  }
 
-    bindEvent(node) {
-        const button = node.querySelector('button');
-        button.addEventListener('click', this.onClickHandler.bind(this))
-    }
+  bindEvent(node) {
+    const button = node.querySelector(".header__exit ");
+    button.addEventListener("click", this.onClickHandler.bind(this));
+  }
 
-    onClickHandler() {
-        httpService.get('/logout')
-            .catch(({ response }) => {
-                if (response.status === 401) {
-                    store.dispatch(mutation_types.SET_USER_INFO, null);
-                    router.go('/sign-in')
-                }
-            })
-    }
+  onClickHandler() {
+    httpService.get("/logout").catch(({ response }) => {
+      if (response.status === 401) {
+        store.dispatch(mutation_types.SET_USER_INFO, null);
+        router.go("/sign-in");
+      }
+    });
+  }
 
-    @BindEvent
-    render() {
-        return this.getTemplate();
-    }
+  @BindEvent
+  render() {
+    return this.getTemplate();
+  }
 }
